@@ -7,10 +7,11 @@ import {
 // Type definitions (schema)
 const typeDefs = `
     type Query {
-        greeting(name:String,age:Int):String!
+        grades:[Int!]!
+        greeting(name:String,age:Int!):String!
         me:User!
         post:Post!
-        add(num1:Float!,num2:Float!):Float!
+        add(numbers:[Float!]!):Float!
     }
     
     type User{
@@ -30,11 +31,18 @@ const typeDefs = `
 // Resolvers
 const resolvers = {
     Query: {
-        add(parent, args, ctx, info){
-            return args.num1 + args.num2
+        grades() {
+            return [88, 85, 12, 35, 33]
+        },
+        add(parent, args, ctx, info) {
+            if (args.numbers.length == 0) {
+                return 0
+            }
+            return args.numbers.reduce((previousValue, currentValue) => {
+                return previousValue + currentValue
+            })
         },
         greeting(parent, args, ctx, info) {
-            console.log(args);
             if (args.name && args.age) {
                 return `Hello ${args.name} Your age ${args.age}`
             }
