@@ -7,8 +7,10 @@ import {
 // Type definitions (schema)
 const typeDefs = `
     type Query {
+        greeting(name:String,age:Int):String!
         me:User!
         post:Post!
+        add(num1:Float!,num2:Float!):Float!
     }
     
     type User{
@@ -28,6 +30,16 @@ const typeDefs = `
 // Resolvers
 const resolvers = {
     Query: {
+        add(parent, args, ctx, info){
+            return args.num1 + args.num2
+        },
+        greeting(parent, args, ctx, info) {
+            console.log(args);
+            if (args.name && args.age) {
+                return `Hello ${args.name} Your age ${args.age}`
+            }
+            return "Hello"
+        },
         me() {
             return {
                 _id: "12345",
