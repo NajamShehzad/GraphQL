@@ -10,6 +10,7 @@ const typeDefs = `
         releaseYear: Int
         rating: Float
         isStock: Boolean!
+        name:String!
     }
 `
 
@@ -30,6 +31,9 @@ const resolvers = {
         },
         isStock() {
             return true
+        },
+        name(){
+            return "Najam Shehzad Butt"
         }
     }
 }
