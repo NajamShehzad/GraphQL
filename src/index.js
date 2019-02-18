@@ -4,13 +4,70 @@ import {
 
 // Scalar types - String, Boolean, Int, Float, ID
 
+//Demo Post Data
+
+const posts = [{
+        _id: "1",
+        title: "New Post",
+        body: "Body of Post 1",
+        published: false
+    },
+    {
+        _id: "2",
+        title: "2nd Post",
+        body: "Body of Post 3 ",
+        published: true
+    },
+    {
+        _id: "3",
+        title: "3nd Post",
+        body: "Body of Post  3",
+        published: true
+
+    }
+]
+
+
+
+
+
+//Demo User Data
+const users = [{
+        _id: "1",
+        name: "Najam Shehzad Butt",
+        age: 21,
+        email: "najam@example.com"
+    },
+    {
+        _id: "2",
+        name: "Mutlib",
+        age: 14,
+        email: "najam@example.com"
+    },
+    {
+        _id: "3",
+        name: "A.rehman",
+        age: 12,
+        email: "najam@example.com"
+    },
+    {
+        _id: "4",
+        name: "Muneeb",
+        age: 19,
+        email: "najam@example.com"
+    }
+]
+
+
+
 // Type definitions (schema)
 const typeDefs = `
     type Query {
+        users(query:String):[User!]!
         grades:[Int!]!
         greeting(name:String,age:Int!):String!
         me:User!
-        post:Post!
+        post(query:String):[Post!]!
         add(numbers:[Float!]!):Float!
     }
     
@@ -31,6 +88,14 @@ const typeDefs = `
 // Resolvers
 const resolvers = {
     Query: {
+        users(parent, args, ctx, info) {
+            if (!args.query) {
+                return users;
+            }
+            return users.filter(data => {
+                return data.name.toLocaleLowerCase().includes(args.query.toLocaleLowerCase());
+            })
+        },
         grades() {
             return [88, 85, 12, 35, 33]
         },
@@ -56,13 +121,15 @@ const resolvers = {
                 age: "21"
             }
         },
-        post() {
-            return {
-                _id: "abc123",
-                title: "Superman",
-                body: "Superman vs Batman",
-                published: false
+        post(parent, args, ctx, info) {
+            if (!args.query) {
+                return posts;
             }
+            return posts.filter(post => {
+                let titleBool = post.title.toLocaleLowerCase().includes(args.query.toLocaleLowerCase());
+                let bodyBool = post.body.toLocaleLowerCase().includes(args.query.toLocaleLowerCase());
+                return titleBool || bodyBool;
+            })
         }
     }
 }
