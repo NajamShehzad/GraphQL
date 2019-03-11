@@ -24,6 +24,19 @@ const posts = [{
         body: "Body of Post  3",
         published: true
 
+    },
+    {
+        _id: "4",
+        title: "2nd Post",
+        body: "Body of Post 3 ",
+        published: true
+    },
+    {
+        _id: "5",
+        title: "3nd Post",
+        body: "Body of Post  3",
+        published: true
+
     }
 ]
 
